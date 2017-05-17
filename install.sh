@@ -21,11 +21,6 @@ group=$3
 
 openvpn_admin="$www/openvpn-admin"
 
-# Check the validity of the arguments
-if [ ! -d "$www" ] ||  ! grep -q "$user" "/etc/passwd" || ! grep -q "$group" "/etc/group" ; then
-  print_help
-  exit
-fi
 
 # current path
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
