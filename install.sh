@@ -30,10 +30,10 @@ printf "\n################## Server informations ##################\n"
 
 read -p "Server Hostname/IP: " ip_server
 
-read -p "Port [443]: " server_port
+read -p "Port [54]: " server_port
 
 if [[ -z $server_port ]]; then
-  server_port="443"
+  server_port="54"
 fi
 
 read -p "MySQL server: " mysql_server
@@ -131,7 +131,7 @@ printf "\n################## Setup OpenVPN ##################\n"
 cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
 cp "$base_path/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
-sed -i "s/port 443/port $server_port/" "/etc/openvpn/server.conf"
+sed -i "s/port 54/port $server_port/" "/etc/openvpn/server.conf"
 
 nobody_group=$(id -ng nobody)
 sed -i "s/group nogroup/group $nobody_group/" "/etc/openvpn/server.conf"
