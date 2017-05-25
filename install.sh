@@ -1,5 +1,8 @@
 #!/bin/bash
+apt-get -y install openvpn
+easy_install pip 
 pip install Werkzeug
+
 # Ensure to be root
 if [ "$EUID" -ne 0 ]; then
   echo "Please run as root"
@@ -40,13 +43,9 @@ read -p "MySQL user password for mysql_server: " mysql_pass
 printf "\n################## Setup OpenVPN ##################\n"
 
 # Copy certificates and the server configuration in the openvpn directory
-cd /etc/openvpn/
-wget https://www.benpaoba.me/cdn/openvpn-config/certs/ca.crt -O ca.crt
-wget https://www.benpaoba.me/cdn/openvpn-config/certs/ta.key -O ta.key
-wget https://www.benpaoba.me/cdn/openvpn-config/certs/server.crt -O server.crt
-wget https://www.benpaoba.me/cdn/openvpn-config/certs/server.key -O server.key
-wget https://www.benpaoba.me/cdn/openvpn-config/certs/dh.pem -O dh.pem
-cp "$base_path/server.conf" "/etc/openvpn/"
+
+cp -r "$base_path/certs/*" "/etc/openvpn/"
+cp -r "$base_path/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
 sed -i "s/port 54/port $server_port/" "/etc/openvpn/server.conf"
 
