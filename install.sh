@@ -63,72 +63,15 @@ read -p "Email Address [me@example.net]: " cert_email
 
 read -p "Common Name (eg, your name or your server's hostname) [ChangeMe]: " key_cn
 
-
-printf "\n################## Creating the certificates ##################\n"
-
-EASYRSA_RELEASES=( $(
-  curl -s https://api.github.com/repos/OpenVPN/easy-rsa/releases | \
-  grep 'tag_name' | \
-  grep -E '3(\.[0-9]+)+' | \
-  awk '{ print $2 }' | \
-  sed 's/[,|"|v]//g'
-) )
-EASYRSA_LATEST=${EASYRSA_RELEASES[0]}
-
-# Get the rsa keys
-wget -q https://github.com/OpenVPN/easy-rsa/releases/download/${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST}.tgz
-tar -xaf EasyRSA-${EASYRSA_LATEST}.tgz
-mv EasyRSA-${EASYRSA_LATEST} /etc/openvpn/easy-rsa
-rm -r EasyRSA-${EASYRSA_LATEST}.tgz
-cd /etc/openvpn/easy-rsa
-
-if [[ ! -z $key_size ]]; then
-  export EASYRSA_KEY_SIZE=$key_size
-fi
-if [[ ! -z $ca_expire ]]; then
-  export EASYRSA_CA_EXPIRE=$ca_expire
-fi
-if [[ ! -z $cert_expire ]]; then
-  export EASYRSA_CERT_EXPIRE=$cert_expire
-fi
-if [[ ! -z $cert_country ]]; then
-  export EASYRSA_REQ_COUNTRY=$cert_country
-fi
-if [[ ! -z $cert_province ]]; then
-  export EASYRSA_REQ_PROVINCE=$cert_province
-fi
-if [[ ! -z $cert_city ]]; then
-  export EASYRSA_REQ_CITY=$cert_city
-fi
-if [[ ! -z $cert_org ]]; then
-  export EASYRSA_REQ_ORG=$cert_org
-fi
-if [[ ! -z $cert_ou ]]; then
-  export EASYRSA_REQ_OU=$cert_ou
-fi
-if [[ ! -z $cert_email ]]; then
-  export EASYRSA_REQ_EMAIL=$cert_email
-fi
-if [[ ! -z $key_cn ]]; then
-  export EASYRSA_REQ_CN=$key_cn
-fi
-
-# Init PKI dirs and build CA certs
-./easyrsa init-pki
-./easyrsa build-ca nopass
-# Generate Diffie-Hellman parameters
-./easyrsa gen-dh
-# Genrate server keypair
-./easyrsa build-server-full server nopass
-
-# Generate shared-secret for TLS Authentication
-openvpn --genkey --secret pki/ta.key
-
-
 printf "\n################## Setup OpenVPN ##################\n"
 
 # Copy certificates and the server configuration in the openvpn directory
-cp /etc/openvpn/easy-rsa/pki/{ca.crt,ta.key,issued/server.crt,private/server.key,dh.pem} "/etc/openvpn/"
+cd /etc/openvpn/
+wget https://www.benpaoba.me/cdn/openvpn-config/certs/ca.crt -O ca.crt
+wget https://www.benpaoba.me/cdn/openvpn-config/certs/ta.key -O ta.key
+wget https://www.benpaoba.me/cdn/openvpn-config/certs/server.crt -O server.crt
+wget https://www.benpaoba.me/cdn/openvpn-config/certs/server.key -O server.key
+wget https://www.benpaoba.me/cdn/openvpn-config/certs/dh.pem -O dh.pem
 cp "$base_path/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
 sed -i "s/port 54/port $server_port/" "/etc/openvpn/server.conf"
