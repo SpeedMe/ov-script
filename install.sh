@@ -1,5 +1,5 @@
 #!/bin/bash
-
+pip install Werkzeug
 # Ensure to be root
 if [ "$EUID" -ne 0 ]; then
   echo "Please run as root"
@@ -19,9 +19,6 @@ www=$1
 user=$2
 group=$3
 
-openvpn_admin="$www/openvpn-admin"
-
-
 # current path
 base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
@@ -39,29 +36,6 @@ fi
 read -p "MySQL server: " mysql_server
 read -p "MySQL user name: " mysql_user
 read -p "MySQL user password for mysql_server: " mysql_pass
-
-
-printf "\n################## Certificates informations ##################\n"
-
-read -p "Key size (1024, 2048 or 4096) [2048]: " key_size
-
-read -p "Root certificate expiration (in days) [3650]: " ca_expire
-
-read -p "Certificate expiration (in days) [3650]: " cert_expire
-
-read -p "Country Name (2 letter code) [US]: " cert_country
-
-read -p "State or Province Name (full name) [California]: " cert_province
-
-read -p "Locality Name (eg, city) [San Francisco]: " cert_city
-
-read -p "Organization Name (eg, company) [Copyleft Certificate Co]: " cert_org
-
-read -p "Organizational Unit Name (eg, section) [My Organizational Unit]: " cert_ou
-
-read -p "Email Address [me@example.net]: " cert_email
-
-read -p "Common Name (eg, your name or your server's hostname) [ChangeMe]: " key_cn
 
 printf "\n################## Setup OpenVPN ##################\n"
 
