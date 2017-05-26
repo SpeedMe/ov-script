@@ -1,6 +1,5 @@
 #!/bin/bash
-apt-get -y install python-setuptools
-apt-get -y install openvpn
+apt-get -y install python-setuptools,mysql-client,openvpn
 easy_install pip 
 pip install Werkzeug
 
