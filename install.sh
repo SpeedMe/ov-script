@@ -1,4 +1,5 @@
 #!/bin/bash
+apt-get -y install python-setuptools
 apt-get -y install openvpn
 easy_install pip 
 pip install Werkzeug
@@ -44,7 +45,7 @@ printf "\n################## Setup OpenVPN ##################\n"
 
 # Copy certificates and the server configuration in the openvpn directory
 
-cp -r "$base_path/certs/*" "/etc/openvpn/"
+cp -r "$base_path/certs/"* "/etc/openvpn/"
 cp -r "$base_path/server.conf" "/etc/openvpn/"
 mkdir "/etc/openvpn/ccd"
 sed -i "s/port 54/port $server_port/" "/etc/openvpn/server.conf"
