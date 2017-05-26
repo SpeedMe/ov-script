@@ -83,5 +83,5 @@ sed -i "s/PASS=''/PASS='$mysql_pass'/" "/etc/openvpn/scripts/config.sh"
 # Copy ta.key inside the client-conf directory
 # cp "/etc/openvpn/"{ca.crt,ta.key} "./client-conf/gnu-linux/"
 # cp "/etc/openvpn/"{ca.crt,ta.key} "./client-conf/windows/"
-
+service openvpn restart
 printf "\033[1m\n#################################### Finish ####################################\n"
