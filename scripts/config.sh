@@ -1,5 +1,5 @@
 #!/bin/bash
-NODE_ID=''
+NODE_ID=
 # MySQL credentials
 HOST=''
 PORT='3306'
