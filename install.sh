@@ -80,7 +80,7 @@ cp -r "$base_path/scripts" "/etc/openvpn/"
 chmod +x "/etc/openvpn/scripts/"*
 
 # Configure MySQL in openvpn scripts
-sed -i "s/NODE_ID=''/NODE_ID='$node_id'/" "/etc/openvpn/scripts/config.sh"
+sed -i "s/NODE_ID=/NODE_ID=$node_id/" "/etc/openvpn/scripts/config.sh"
 sed -i "s/HOST=''/HOST='$mysql_server'/" "/etc/openvpn/scripts/config.sh"
 sed -i "s/USER=''/USER='$mysql_user'/" "/etc/openvpn/scripts/config.sh"
 sed -i "s/PASS=''/PASS='$mysql_pass'/" "/etc/openvpn/scripts/config.sh"
