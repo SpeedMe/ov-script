@@ -1,4 +1,6 @@
 #!/bin/bash
+apt-get update
+apt-get upgrade
 apt-get -y install python-setuptools,mysql-client,openvpn
 easy_install pip 
 pip install Werkzeug
