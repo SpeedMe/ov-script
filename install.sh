@@ -30,6 +30,8 @@ base_path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 printf "\n################## Server informations ##################\n"
 
+read -p "node_id: " node_id
+
 read -p "Server Hostname/IP: " ip_server
 
 read -p "Port [54]: " server_port
@@ -78,6 +80,7 @@ cp -r "$base_path/scripts" "/etc/openvpn/"
 chmod +x "/etc/openvpn/scripts/"*
 
 # Configure MySQL in openvpn scripts
+sed -i "s/NODE_ID=''/NODE_ID='$node_id'/" "/etc/openvpn/scripts/config.sh"
 sed -i "s/HOST=''/HOST='$mysql_server'/" "/etc/openvpn/scripts/config.sh"
 sed -i "s/USER=''/USER='$mysql_user'/" "/etc/openvpn/scripts/config.sh"
 sed -i "s/PASS=''/PASS='$mysql_pass'/" "/etc/openvpn/scripts/config.sh"
