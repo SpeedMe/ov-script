@@ -59,8 +59,7 @@ __yellow(){
 function install_ikev2(){
     rootness
     disable_selinux
-    get_system
-    yum_install
+    apt_install
     get_my_ip
     pre_install
     download_files
@@ -92,29 +91,10 @@ if [ -s /etc/selinux/config ] && grep 'SELINUX=enforcing' /etc/selinux/config; t
 fi
 }
 
-# Ubuntu or CentOS
-function get_system(){
-    if grep -Eqi "CentOS" /etc/issue || grep -Eq "CentOS" /etc/*-release; then
-        system_str="0"
-    elif  grep -Eqi "Ubuntu" /etc/issue || grep -Eq "Ubuntu" /etc/*-release; then
-        system_str="1"
-    elif  grep -Eqi "Debian" /etc/issue || grep -Eq "Debian" /etc/*-release; then
-        system_str="1"
-    else
-        echo "This Script must be running at the CentOS or Ubuntu or Debian!"
-        exit 1
-    fi
-}
-
 #install necessary lib
-function yum_install(){
-    if [ "$system_str" = "0" ]; then
-    yum -y update
-    yum -y install pam-devel openssl-devel make gcc curl
-    else
+function apt_install(){
     apt-get -y update
     apt-get -y install libpam0g-dev libssl-dev make gcc curl
-    fi
 }
 
 # Get IP address of the server
